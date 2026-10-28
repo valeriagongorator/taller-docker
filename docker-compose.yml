@@ -1,0 +1,50 @@
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        STUDENT_ID: "${STUDENT_ID:-123456}"
+    image: eco-air-backend:1.0.0
+    container_name: eco_air_backend
+    expose:
+      - "8080"
+    environment:
+      - OPERATOR_ID=${STUDENT_ID:-123456}
+    deploy:
+      resources:
+        limits:
+          cpus: "1.00"
+          memory: 512M
+        reservations:
+          cpus: "0.25"
+          memory: 256M
+    networks:
+      - app-network
+    restart: unless-stopped
+
+  nginx:
+    image: nginx:alpine
+    container_name: eco_air_proxy
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - backend
+    deploy:
+      resources:
+        limits:
+          cpus: "0.50"
+          memory: 128M
+        reservations:
+          cpus: "0.10"
+          memory: 32M
+    networks:
+      - app-network
+    restart: unless-stopped
+
+networks:
+  app-network:
+    name: app-network
+    driver: bridge
