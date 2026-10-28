@@ -176,4 +176,5 @@ docker compose down
 
 ## 👤 Autora
 * **Valeria Estefanía Góngora Torres**
+* **Julieth Vanessa Mena Ortega**
 * Repositorio: [valeriagongorator/taller-docker](https://github.com/valeriagongorator/taller-docker)
